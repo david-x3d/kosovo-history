@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="An illustrated scroll through Kosovo's history, from the first farmers around 6000 BC to today, with place names in English, Albanian or Serbian.">
+<meta name="theme-color" content="#1A1612">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Field of Blackbirds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spline+Sans+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap">
+<style>
+/* Layout: one long night over the plain. Each era tints the sky behind it; linocut prints hang
+   as paper plates; a fixed year counter scrubs through eight thousand years as you scroll. */
+:root{
+  --sky:#1A1612;
+  --bone:#ECE4D4; --muted:#A79E8E; --rule:rgba(236,228,212,.16);
+  --peony:#D4566F; --ochre:#D9A54B; --paper:#EFE8DA; --pencil:#77705F; --ink:#16131A;
+  --dusk-1:#262039; --dusk-2:#4E3552; --dusk-3:#A9566A; --dusk-4:#E39A6A;
+  --display:"Gloock","Bodoni Moda",Didot,"Times New Roman",serif;
+  --body:"Literata",Georgia,"Times New Roman",serif;
+  --mono:"Spline Sans Mono",ui-monospace,Menlo,Consolas,monospace;
+  --block:"Archivo Black","Arial Black",Impact,sans-serif;
+  --gutter:clamp(16px,5vw,64px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--sky);color:var(--bone);font:400 1.08rem/1.7 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--ochre);outline-offset:3px}
+p{margin:0}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;isolation:isolate;
+  background:linear-gradient(180deg,var(--dusk-1) 0%,var(--dusk-2) 38%,var(--dusk-3) 66%,var(--dusk-4) 82%,var(--dusk-4) 100%)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:2}
+.hero-inner{position:relative;z-index:1;padding:clamp(110px,15vw,190px) var(--gutter) clamp(170px,22vw,250px);max-width:1280px;margin-inline:auto}
+.kicker{font:500 .74rem/1.4 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:rgba(236,228,212,.72)}
+.hero h1{font-size:clamp(5.4rem,23vw,19rem);line-height:.8;letter-spacing:-.015em;color:var(--bone);margin:.12em 0 .08em -0.04em;display:inline-block}
+.alt-names{font:400 clamp(1.15rem,2.6vw,1.75rem)/1.2 var(--body);font-style:italic;color:rgba(236,228,212,.86)}
+.hero-lede{max-width:40ch;margin-top:22px;font-size:clamp(1.02rem,1.6vw,1.2rem);color:rgba(236,228,212,.9)}
+.hint{position:absolute;z-index:3;left:var(--gutter);bottom:22px;font:500 .7rem var(--mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(236,228,212,.6)}
+
+/* ---------- fixed chrome ---------- */
+.names{position:fixed;z-index:20;top:calc(env(safe-area-inset-top,0px) + 14px);right:14px;display:flex;align-items:center;gap:2px;padding:4px;
+  background:rgba(20,17,22,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--rule);border-radius:999px;font:500 .72rem/1 var(--mono)}
+.names span{padding:0 8px 0 8px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.names button{all:unset;cursor:pointer;padding:7px 10px;border-radius:999px;color:var(--bone);letter-spacing:.06em}
+.names button[aria-pressed="true"]{background:var(--bone);color:var(--ink)}
+.names button:focus-visible{outline:2px solid var(--ochre)}
+.counter{position:fixed;z-index:15;left:clamp(14px,2vw,24px);top:calc(env(safe-area-inset-top,0px) + 12px);pointer-events:none;
+  font-family:var(--display);font-size:clamp(2rem,4.4vw,3.8rem);line-height:.9;color:var(--bone);font-variant-numeric:tabular-nums lining-nums;
+  opacity:0;transform:translateY(-10px);transition:opacity .4s ease,transform .4s ease;mix-blend-mode:difference}
+.counter.on{opacity:.9;transform:none}
+.counter small{display:block;font:500 .66rem/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--bone);margin-top:6px}
+.ruler{position:fixed;z-index:14;right:18px;top:50%;transform:translateY(-50%);display:grid;gap:9px;opacity:0;transition:opacity .4s}
+.ruler.on{opacity:1}
+.ruler a{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none;font:500 .64rem var(--mono);letter-spacing:.12em;color:var(--muted)}
+.ruler a i{display:block;width:14px;height:1px;background:var(--muted);transition:width .3s,background .3s}
+.ruler a span{opacity:0;transform:translateX(6px);transition:opacity .25s,transform .25s}
+.ruler:hover a span,.ruler a.cur span{opacity:1;transform:none}
+.ruler a.cur{color:var(--bone)}
+.ruler a.cur i{width:30px;background:var(--peony)}
+@media (max-width:900px){.ruler{display:none}}
+
+/* ---------- eras ---------- */
+main{position:relative}
+.era{padding:clamp(80px,12vw,160px) var(--gutter);max-width:1280px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,6vw,96px);align-items:start}
+.era.flip .plate-col{order:-1}
+.era.solo{grid-template-columns:minmax(0,1fr);max-width:900px}
+@media (max-width:860px){.era{grid-template-columns:minmax(0,1fr)}.era.flip .plate-col{order:0}}
+.text{min-width:0;display:grid;gap:18px;align-content:start}
+.when{font:500 .78rem/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ochre);display:flex;align-items:center;gap:12px}
+.when::before{content:"";width:28px;height:1px;background:currentColor}
+.era h2{font-size:clamp(2.7rem,6vw,5rem);line-height:.98;letter-spacing:-.01em;margin-bottom:6px}
+.text p{max-width:60ch;color:rgba(236,228,212,.88)}
+.text p.note{font-size:.95rem;color:var(--muted);border-left:2px solid var(--peony);padding-left:14px}
+.plate-col{min-width:0;position:sticky;top:12vh}
+@media (max-width:860px){.plate-col{position:static}}
+
+.plate{background:var(--paper);padding:clamp(12px,2vw,20px) clamp(12px,2vw,20px) 0;transform:rotate(var(--tilt,-.7deg));
+  box-shadow:0 1px 0 rgba(0,0,0,.3),0 30px 60px -20px rgba(0,0,0,.6);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.plate:hover{transform:rotate(0) translateY(-4px)}
+.era.flip .plate{--tilt:.8deg}
+.frame{position:relative;overflow:hidden;aspect-ratio:3/2;background:#DCD3C2}
+.frame.tall{aspect-ratio:2/3}.frame.sq{aspect-ratio:1/1}.frame.wide{aspect-ratio:16/9}
+.frame img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;display:block;will-change:transform}
+.pencil{display:flex;justify-content:space-between;gap:12px;padding:10px 2px 12px;font:italic 400 .82rem/1.3 var(--body);color:var(--pencil)}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    .frame{animation:ink linear both;animation-timeline:view();animation-range:entry 10% cover 38%}
+    @keyframes ink{from{clip-path:inset(0 62% 0 0)}to{clip-path:inset(0 0 0 0)}}
+  }
+}
+
+/* intro */
+.intro{padding:clamp(80px,11vw,150px) var(--gutter) 0;max-width:1280px;margin-inline:auto}
+.intro-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,90px);align-items:end}
+@media (max-width:860px){.intro-grid{grid-template-columns:minmax(0,1fr)}}
+.intro h2{font-size:clamp(2.8rem,6.5vw,5.6rem);line-height:.95}
+.intro .text{margin-top:28px}
+.drop::first-letter{font-family:var(--display);float:left;font-size:4.4em;line-height:.8;padding:6px 10px 0 0;color:var(--peony)}
+
+/* 1389 peony glow */
+#e1389{position:relative}
+.petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1px;background:var(--rule);border-block:1px solid var(--rule);margin-top:14px}
+.stat{background:var(--sky);padding:22px 18px 22px 0;display:grid;gap:8px;align-content:start;transition:background .6s}
+.stat b{font:400 clamp(2.3rem,4.6vw,3.4rem)/1 var(--display);color:var(--bone);font-variant-numeric:lining-nums}
+.stat span{font-size:.92rem;color:var(--muted);max-width:30ch}
+
+/* quote / big fact */
+.fact{font:400 clamp(1.5rem,3.2vw,2.3rem)/1.25 var(--display);color:var(--bone);max-width:24ch;padding-top:6px}
+.fact em{color:var(--ochre);font-style:normal}
+
+/* newborn */
+.newborn-wrap{grid-column:1/-1;display:grid;gap:14px;justify-items:center;margin-top:10px;min-width:0}
+.newborn{display:flex;justify-content:center;gap:clamp(4px,1vw,12px);font:400 clamp(3.2rem,13.5vw,11rem)/1 var(--block);max-width:100%;cursor:pointer;user-select:none}
+.newborn .l{position:relative;display:inline-block;transition:transform .5s cubic-bezier(.3,1.6,.5,1)}
+.newborn .l b{position:relative;z-index:1;display:block;font-weight:400;color:transparent;-webkit-background-clip:text;background-clip:text;background-size:cover;transition:filter .3s}
+.newborn .l::before{content:attr(data-l);position:absolute;left:0;top:0;z-index:0;color:#0B0A0D;
+  text-shadow:1px 1px 0 #0B0A0D,2px 2px 0 #0B0A0D,3px 3px 0 #0B0A0D,4px 4px 0 #0B0A0D,5px 5px 0 #0B0A0D,6px 6px 0 #0B0A0D,7px 7px 0 #0B0A0D,8px 8px 0 #0B0A0D;
+  transform:translate(2px,2px)}
+.newborn .l:hover{transform:translateY(-8px) rotate(-2deg)}
+.nb-cap{font:500 .72rem/1.5 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;max-width:46ch}
+.nb-cap b{color:var(--bone);font-weight:500}
+
+/* sources */
+.sources{max-width:900px;margin-inline:auto;padding:clamp(70px,10vw,130px) var(--gutter) clamp(120px,16vw,190px);border-top:1px solid var(--rule)}
+.sources h2{font-size:clamp(2rem,4vw,3rem);margin-bottom:22px}
+.sources ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.sources li{padding-left:20px;position:relative;color:rgba(236,228,212,.85);font-size:.98rem}
+.sources li::before{content:"";position:absolute;left:0;top:.75em;width:9px;height:1px;background:var(--peony)}
+.sources p{margin-top:26px;color:var(--muted);font-size:.92rem;max-width:62ch}
+
+.pn{white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="names" role="group" aria-label="Place names">
+  <span>Names</span>
+  <button type="button" id="nm-en" data-lang="en" aria-pressed="true">EN</button>
+  <button type="button" id="nm-sq" data-lang="sq" aria-pressed="false" title="Albanian">SQ</button>
+  <button type="button" id="nm-sr" data-lang="sr" aria-pressed="false" title="Serbian">SR</button>
+</div>
+
+<div class="counter" id="counter" aria-hidden="true"><span id="yr">6000</span><small id="yr-era">BC</small></div>
+<nav class="ruler" id="ruler" aria-label="Eras"></nav>
+
+<header class="hero" id="hero">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <p class="kicker">A short history · 6000 BC to today</p>
+    <h1 id="title">Kosovo<span id="baseline" style="display:inline-block;width:0;height:0;vertical-align:baseline"></span></h1>
+    <p class="alt-names" lang="sq">Kosova · <span lang="sr">Косово</span></p>
+    <p class="hero-lede">Eight thousand years on a small high plain in the Balkans, told in order, with both sides of the story.</p>
+  </div>
+  <span class="hint">Move near the title. The blackbirds are skittish.</span>
+</header>
+
+<main id="main">
+
+<section class="intro" data-sky="#1A1612" id="intro">
+  <div class="intro-grid">
+    <div>
+      <p class="when">The name</p>
+      <h2 style="margin-top:16px">A field of blackbirds</h2>
+    </div>
+    <div class="plate" style="--tilt:.5deg">
+      <div class="frame wide"><img src="img/plain.webp" alt="Linocut of a dusk plain with distant jagged mountains and a flock of blackbirds rising" loading="eager"></div>
+      <div class="pencil"><span>The plain at dusk</span><span>1/8</span></div>
+    </div>
+  </div>
+  <div class="text" style="max-width:62ch">
+    <p class="drop">Kosovo takes its name from <i>kos</i>, the Serbian word for blackbird. Kosovo Polje, the plain west of <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> where a famous battle was fought in 1389, means the field of blackbirds. In Albanian the country is Kosova or Kosovë.</p>
+    <p>It covers 10,887 square kilometres, about the size of Jamaica, and around 1.6 million people live there. Few places that small carry as much history, or as much disagreement about it. Albanians and Serbs often remember the same events in different ways. This page goes in order, sticks to what historians broadly agree on, and says where they don't.</p>
+    <p class="note">Towns have Albanian and Serbian names. Use the switch in the top corner to read them in English, Albanian or Serbian.</p>
+  </div>
+</section>
+
+<section class="era" data-sky="#1D1610" data-year="-6000" data-label="Neolithic" id="neolithic">
+  <div class="text">
+    <p class="when">c. 6000 – 3000 BC</p>
+    <h2>Clay goddesses</h2>
+    <p>The first farmers settled the river valleys around eight thousand years ago. They grew wheat and barley, kept sheep and goats, and lived in houses of wattle and daub. Their villages belonged to the Starčevo and later the Vinča cultures, which spread across the central Balkans.</p>
+    <p>In the 1950s, digging at Tjerrtorja in <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> turned up a small terracotta figure of a seated woman with a five-sided, mask-like face. Archaeologists call her the Goddess on the Throne. She has become a symbol of the city.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame tall"><img src="img/goddess.webp" alt="Linocut of a seated terracotta figurine with a pentagonal mask-like head on a simple throne" loading="lazy"></div>
+    <div class="pencil"><span>Goddess on the Throne</span><span>2/8</span></div></div>
+  </div>
+</section>
+
+<section class="era flip" data-sky="#1F1A11" data-year="-400" data-label="Dardania" id="dardania">
+  <div class="text">
+    <p class="when">c. 400 BC – AD 600</p>
+    <h2>Dardania and Rome</h2>
+    <p>Greek and Roman writers called the people here the Dardani. Historians still argue whether they were Illyrian, Thracian, or something of both. By the 3rd century BC they had a kingdom strong enough to raid Macedon.</p>
+    <p>Rome absorbed Dardania around the turn of the millennium. Silver and lead from the mines paid for roads and baths. The city of Ulpiana was founded under Emperor Trajan in the early 2nd century AD. After an earthquake in 518, Justinian rebuilt it and renamed it Justiniana Secunda.</p>
+    <p class="note">Albanian historians often trace Albanian ancestry to the Dardani. Serbian historians stress the Slavic settlement that came later. The evidence for either kind of continuity is thin.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame"><img src="img/ulpiana.webp" alt="Linocut of Roman ruins: broken column bases and low walls in a grassy field" loading="lazy"></div>
+    <div class="pencil"><span>Ulpiana</span><span>3/8</span></div></div>
+  </div>
+</section>
+
+<section class="era" data-sky="#0F152B" data-year="1180" data-label="Middle Ages" id="medieval">
+  <div class="text">
+    <p class="when">1180s – 1455</p>
+    <h2>Domes, frescoes, silver</h2>
+    <p>Slavs settled the Balkans in the 6th and 7th centuries. The region passed between Byzantium and Bulgaria until the Serbian ruler Stefan Nemanja took it at the end of the 12th century. For the next two hundred years it was the heart of the Serbian state.</p>
+    <p>The Serbian church moved its seat to <span class="pn" data-en="Peja" data-sq="Peja" data-sr="Peć">Peja</span>, which became a patriarchate in 1346. Kings paid for monasteries: <span class="pn" data-en="Gračanica" data-sq="Graçanica" data-sr="Gračanica">Gračanica</span> in 1321, Visoki <span class="pn" data-en="Dečani" data-sq="Deçan" data-sr="Dečani">Dečani</span> between 1327 and 1335. Their frescoes, thousands of figures in lapis blue and gold, are on UNESCO's World Heritage list, and on its list of sites in danger since 2006.</p>
+    <p>The mines at <span class="pn" data-en="Novo Brdo" data-sq="Novobërda" data-sr="Novo Brdo">Novo Brdo</span> were among the biggest silver producers in Europe. The <span class="pn" data-en="Dečani" data-sq="Deçan" data-sr="Dečani">Dečani</span> charters of 1330 list the villages that worked for the monastery, including Albanian ones: an early written trace of Albanians in the area.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame"><img src="img/monastery.webp" alt="Linocut of a banded stone monastery church with a central dome in a forested mountain valley" loading="lazy"></div>
+    <div class="pencil"><span>Monastery in the valley</span><span>4/8</span></div></div>
+  </div>
+</section>
+
+<section class="era flip" data-sky="#25101A" data-year="1389" data-label="1389" id="e1389">
+  <canvas class="petals" id="petals" aria-hidden="true"></canvas>
+  <div class="text">
+    <p class="when">28 June 1389</p>
+    <h2>The battle on the field of blackbirds</h2>
+    <p>On St Vitus' Day, a Christian coalition under Prince Lazar of Serbia met the army of the Ottoman sultan Murad I on the plain near <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span>. Lazar's side included Bosnian troops and, by most accounts, Albanian lords. Both Lazar and Murad died. Tradition says a knight named Miloš Obilić got into the sultan's tent and stabbed him.</p>
+    <p>The battle itself was probably a draw. Both armies were wrecked, but the Ottomans could replace their losses and Serbia could not. Within a few years Lazar's son was an Ottoman vassal.</p>
+    <p>What the battle became matters more than what it was. Serbian epic songs turned Lazar into a martyr who chose a heavenly kingdom over an earthly one, and the field into sacred ground. Legend says the red peonies that grow there came from the blood of the fallen. Murad's tomb still stands near the battlefield.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame"><img src="img/field1389.webp" alt="Linocut of an empty meadow at dawn with red peonies, a fallen spear and a bare banner pole in the grass" loading="lazy"></div>
+    <div class="pencil"><span>Peonies on the field</span><span>5/8</span></div></div>
+  </div>
+</section>
+
+<section class="era" data-sky="#0E1F1D" data-year="1455" data-label="Ottoman" id="ottoman">
+  <div class="text">
+    <p class="when">1455 – 1912</p>
+    <h2>Four and a half centuries</h2>
+    <p><span class="pn" data-en="Novo Brdo" data-sq="Novobërda" data-sr="Novo Brdo">Novo Brdo</span> fell in 1455, and the region stayed in the Ottoman Empire for more than 450 years. Prizren grew into a trading town of stone bridges, bathhouses and mosques; the Sinan Pasha Mosque went up in 1615. Over these centuries many Albanians converted to Islam, while most Serbs stayed Orthodox.</p>
+    <p>In 1690, after a failed Habsburg campaign, Patriarch Arsenije III led a large number of Serbs north across the Danube. Serbian tradition calls it the Great Migration. Historians argue about its size, but over the following centuries the population tilted towards an Albanian majority.</p>
+    <p>In June 1878, Albanian leaders met in Prizren to oppose plans at the Congress of Berlin to hand Albanian-inhabited land to Serbia, Montenegro and Greece. The League of Prizren is counted as the start of the Albanian national movement.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame"><img src="img/prizren.webp" alt="Linocut of an arched stone bridge over a river, a mosque with a slender minaret, terraced houses and a hilltop fortress" loading="lazy"></div>
+    <div class="pencil"><span>Prizren</span><span>6/8</span></div></div>
+  </div>
+</section>
+
+<section class="era solo" data-sky="#1B1A1D" data-year="1912" data-label="1912" id="wars">
+  <div class="text">
+    <p class="when">1912 – 1945</p>
+    <h2>Wars and new borders</h2>
+    <p class="fact">In 1912 the Ottomans were gone within weeks. <em>Serbs saw a homecoming. Albanians, by then the majority, saw a conquest.</em></p>
+    <p>In the First Balkan War, Serbian and Montenegrin armies took Kosovo. An international inquiry sent by the Carnegie Endowment documented massacres and burned villages. In the winter of 1915 the Serbian army retreated the other way, through Kosovo and over the Albanian mountains, with huge losses.</p>
+    <p>Between the wars, the Kingdom of Yugoslavia settled Serb and Montenegrin colonists on land taken from Albanians and pushed Albanians to emigrate to Turkey. In the Second World War most of Kosovo was joined to Italian-run Albania, and the violence ran the other way. By 1945 Kosovo was back in Yugoslavia.</p>
+  </div>
+</section>
+
+<section class="era flip" data-sky="#121B23" data-year="1945" data-label="Yugoslavia" id="yugoslavia">
+  <div class="text">
+    <p class="when">1945 – 1989</p>
+    <h2>Province, university, protest</h2>
+    <p>Tito's Yugoslavia made Kosovo an autonomous part of Serbia. Under the security chief Aleksandar Ranković, Albanians lived under heavy police pressure until he fell in 1966. After student protests in 1968 things loosened: the University of <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> opened in 1970, and Albanian-language schools, press and television grew.</p>
+    <p>The 1974 constitution gave Kosovo nearly the powers of a republic, with its own seat in the federal presidency. In 1981, a year after Tito's death, students protested about canteen food, then for full republic status. The army put the protests down.</p>
+    <p>In 1982 <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> got its National Library: 99 domes under a metal net, designed by the Croatian architect Andrija Mutnjaković. People love it or hate it. Few ignore it.</p>
+    <p class="note">Many Serbs left Kosovo in these decades, citing pressure and harassment. In Belgrade, that grievance fed a new nationalism.</p>
+  </div>
+  <div class="plate-col">
+    <div class="plate"><div class="frame sq"><img src="img/library.webp" alt="Linocut of a brutalist building covered in small domes behind a metal lattice, seen from below" loading="lazy"></div>
+    <div class="pencil"><span>National Library</span><span>7/8</span></div></div>
+  </div>
+</section>
+
+<section class="era solo" data-sky="#191515" data-year="1989" data-label="1989" id="nineties">
+  <div class="text">
+    <p class="when">1989 – 1999</p>
+    <h2>Parallel lives, then war</h2>
+    <p>In March 1989, Serbia under Slobodan Milošević stripped Kosovo of its autonomy. In February, miners at <span class="pn" data-en="Trepča" data-sq="Trepça" data-sr="Trepča">Trepča</span> had gone on hunger strike underground to try to stop it. On 28 June, the 600th anniversary of the battle, Milošević spoke to a vast crowd at Gazimestan, on the old battlefield.</p>
+    <p>Through the 1990s Albanians were dismissed from state jobs, hospitals and schools. Led by the writer Ibrahim Rugova, they answered with peaceful resistance: a parallel state, with classes held in private houses and taxes paid to their own government.</p>
+    <p>By 1998 an armed group, the Kosovo Liberation Army, was fighting the Serbian police and army. Serbian offensives in Drenica killed many civilians. After 45 Albanians were killed at <span class="pn" data-en="Račak" data-sq="Reçak" data-sr="Račak">Račak</span> in January 1999 and talks at Rambouillet failed, NATO bombed Yugoslavia for 78 days, from 24 March to 10 June 1999.</p>
+    <p>During the bombing, Serbian forces drove hundreds of thousands of Albanians out of the country. When NATO troops arrived in June, most came back, and many Serbs, Roma and others fled revenge attacks.</p>
+    <div class="stats">
+      <div class="stat"><b data-count="13500">~13,500</b><span>people killed or missing in Kosovo, 1998 to 2000. Most were Albanian civilians.</span></div>
+      <div class="stat"><b data-count="800000">800,000+</b><span>Albanians who fled or were expelled to neighbouring countries in spring 1999.</span></div>
+      <div class="stat"><b data-count="200000">200,000+</b><span>Serbs, Roma and others who left after June 1999. The figure is disputed.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="era solo" data-sky="#131822" data-year="1999" data-label="UNMIK" id="unmik">
+  <div class="text">
+    <p class="when">1999 – 2008</p>
+    <h2>Nine years in between</h2>
+    <p>UN Security Council Resolution 1244 put Kosovo under a UN mission, UNMIK, while NATO-led KFOR troops kept the peace. Kosovo stayed formally part of Serbia but was run separately.</p>
+    <p>Serbs gathered in enclaves and in the north around <span class="pn" data-en="Mitrovica" data-sq="Mitrovica" data-sr="Mitrovica">Mitrovica</span>, where the bridge over the Ibar became a dividing line. In March 2004, riots across Kosovo left 19 people dead and damaged or destroyed hundreds of Serbian homes and dozens of churches and monasteries.</p>
+    <p>In 2007, UN talks led by the former Finnish president Martti Ahtisaari proposed independence under international supervision. Serbia rejected the plan, and Russia blocked it at the Security Council.</p>
+  </div>
+</section>
+
+<section class="era solo" data-sky="#0F1A2B" data-year="2008" data-label="2008" id="newborn" style="max-width:1280px">
+  <div class="text" style="max-width:900px">
+    <p class="when">17 February 2008</p>
+    <h2>Newborn</h2>
+    <p>Kosovo's assembly declared independence on a Sunday afternoon. In <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> that day, a monument of seven yellow letters was unveiled, spelling NEWBORN. Thousands of people signed it. It has been repainted on the anniversary ever since.</p>
+    <p>Serbia does not recognise the declaration and still treats Kosovo as its southern province. In 2010 the International Court of Justice gave an advisory opinion that the declaration did not violate international law. Roughly half of the UN's members recognise Kosovo; the exact count is disputed.</p>
+  </div>
+  <div class="newborn-wrap">
+    <div class="newborn" id="nb" role="img" aria-label="The NEWBORN monument letters, shown in a changing paint scheme">
+      <span class="l" data-l="N"><b>N</b></span><span class="l" data-l="E"><b>E</b></span><span class="l" data-l="W"><b>W</b></span><span class="l" data-l="B"><b>B</b></span><span class="l" data-l="O"><b>O</b></span><span class="l" data-l="R"><b>R</b></span><span class="l" data-l="N"><b>N</b></span>
+    </div>
+    <p class="nb-cap"><b id="nb-name">2008 · Yellow, signed</b><br>Click the letters to repaint them. The schemes here are made up for this page.</p>
+  </div>
+</section>
+
+<section class="era solo" data-sky="#121A20" data-year="2026" data-label="Today" id="today">
+  <div class="text">
+    <p class="when">2008 – today</p>
+    <h2>Young country, old questions</h2>
+    <p>Kosovo has one of the youngest populations in Europe and a large diaspora, mostly in Germany and Switzerland. The 2024 census counted about 1.6 million residents.</p>
+    <p>The 2013 Brussels Agreement started an EU-led dialogue between <span class="pn" data-en="Pristina" data-sq="Prishtina" data-sr="Priština">Pristina</span> and Belgrade on normalising relations. Progress has been slow and the Serb-majority north remains tense. Since January 2024, Kosovo's citizens can travel to the Schengen area without a visa.</p>
+    <p>In 2016 the judoka Majlinda Kelmendi won Kosovo's first Olympic medal, a gold, in Rio. In <span class="pn" data-en="Dečani" data-sq="Deçan" data-sr="Dečani">Dečani</span>, monks still hold services in the 14th-century church, with NATO soldiers at the gate. Both histories are still being lived, in the same small place.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="sources" data-sky="#121A20">
+  <h2>Further reading</h2>
+  <ul>
+    <li>Noel Malcolm, <i>Kosovo: A Short History</i> (1998)</li>
+    <li>Tim Judah, <i>Kosovo: What Everyone Needs to Know</i> (2008)</li>
+    <li>Humanitarian Law Center and Humanitarian Law Center Kosovo, <i>Kosovo Memory Book</i> (casualty figures 1998–2000)</li>
+    <li>UNESCO World Heritage Centre, <i>Medieval Monuments in Kosovo</i></li>
+    <li>International Court of Justice, advisory opinion of 22 July 2010</li>
+    <li>Kosovo Agency of Statistics, 2024 census</li>
+  </ul>
+  <p>The illustrations are modern linocut-style images made for this page. They are not historical artworks and do not show real people. Figures for casualties and displacement are rounded estimates; sources differ.</p>
+</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+
+  /* ================= hero: blackbirds ================= */
+  const hero = $('#hero'), cv = $('#sky'), ctx = cv.getContext('2d');
+  let perchTop = 200, W = 0, H = 0, DPR = 1, land = null, perches = [], birds = [], pointer = {x:-999, y:-999, on:false}, landTop = 0, scale = 1;
+
+  function drawLand(){
+    land = document.createElement('canvas'); land.width = W * DPR; land.height = H * DPR;
+    const g = land.getContext('2d'); g.scale(DPR, DPR);
+    landTop = H - Math.min(230, Math.max(150, H * .26));
+    // far: Šar mountains, jagged
+    let rnd = mulberry(11);
+    g.fillStyle = '#5B3C58'; g.beginPath(); g.moveTo(0, H);
+    for (let x = 0; x <= W + 30; x += 26 + rnd() * 30) g.lineTo(x, landTop - 10 - rnd() * 70 * (0.6 + .4 * Math.sin(x / W * 3)));
+    g.lineTo(W, H); g.fill();
+    // mid hills
+    g.fillStyle = '#33233A'; g.beginPath(); g.moveTo(0, H);
+    for (let x = 0; x <= W; x += 6) g.lineTo(x, landTop + 34 + Math.sin(x / 140) * 14 + Math.sin(x / 47 + 2) * 5);
+    g.lineTo(W, H); g.fill();
+    // near field, matching the page
+    const near = getComputedStyle(document.documentElement).getPropertyValue('--sky').trim() || '#1A1612';
+    g.fillStyle = near; g.beginPath(); g.moveTo(0, H);
+    for (let x = 0; x <= W; x += 6) g.lineTo(x, landTop + 82 + Math.sin(x / 260 + 1) * 16 + Math.sin(x / 70) * 4);
+    g.lineTo(W, H); g.fill();
+    // furrows
+    g.strokeStyle = 'rgba(236,228,212,.05)'; g.lineWidth = 1;
+    for (let i = 0; i < 9; i++) { const y = landTop + 110 + i * 14; g.beginPath(); for (let x = 0; x <= W; x += 10) g.lineTo(x, y + Math.sin(x / 260 + 1) * 16 * (1 - i / 12)); g.stroke(); }
+  }
+  function mulberry(a){ return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  function findPerches(){
+    const h1 = $('#title'), hr = hero.getBoundingClientRect(), r = h1.getBoundingClientRect(), b = $('#baseline').getBoundingClientRect();
+    const fs = parseFloat(getComputedStyle(h1).fontSize); scale = Math.max(.7, Math.min(1.5, fs / 180));
+    const oc = document.createElement('canvas'); oc.width = Math.ceil(r.width) + 4; oc.height = Math.ceil(r.height) + 4;
+    const o = oc.getContext('2d', {willReadFrequently:true});
+    o.font = `400 ${fs}px ${getComputedStyle(h1).fontFamily}`; o.textBaseline = 'alphabetic'; o.fillStyle = '#000';
+    o.fillText('Kosovo', 0, b.top - r.top);
+    const data = o.getImageData(0, 0, oc.width, oc.height).data, tops = [];
+    for (let x = 0; x < oc.width; x++) { let t = -1; for (let y = 0; y < oc.height; y++) if (data[(y * oc.width + x) * 4 + 3] > 128) { t = y; break; } tops.push(t); }
+    const pts = [], gap = 13 * scale;
+    for (let x = 3; x < tops.length - 3; x += 2) {
+      const t = tops[x]; if (t < 0) continue;
+      if (tops[x - 3] < 0 || tops[x + 3] < 0 || Math.abs(tops[x - 3] - t) > 3 || Math.abs(tops[x + 3] - t) > 3) continue;
+      if (pts.length && x + r.left - hr.left - pts[pts.length - 1].x < gap) continue;
+      pts.push({x: x + r.left - hr.left, y: t + r.top - hr.top, bird: null});
+    }
+    return pts;
+  }
+
+  function Bird(i, rnd){
+    this.z = .55 + rnd() * .6; this.x = rnd() * W; this.y = rnd() * Math.max(60, perchTop * .8) + 10;
+    const a = rnd() * 6.28; this.vx = Math.cos(a) * 2; this.vy = Math.sin(a) * 2;
+    this.phase = rnd() * 6.28; this.state = 'fly'; this.perch = null; this.since = 0; this.dir = rnd() < .5 ? -1 : 1; this.bob = rnd() * 100;
+  }
+
+  function setup(){
+    const r = hero.getBoundingClientRect(); if (r.width < 2 || r.height < 2) return false; DPR = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height;
+    cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    drawLand();
+    const old = perches; perches = findPerches();
+    const rnd = mulberry(5), n = W < 600 ? 120 : 200;
+    if (!birds.length) for (let i = 0; i < n; i++) birds.push(new Bird(i, rnd));
+    birds.forEach(b => { if (b.state !== 'fly') { b.state = 'fly'; b.perch = null; } });
+    // seat most perches at start
+    perchTop = perches.length ? Math.min(...perches.map(p => p.y)) : landTop * .4;
+    let k = 0; perches.forEach((p, i) => { if (i % 5 !== 4 && k < birds.length) { const b = birds[k++]; b.state = 'perch'; b.perch = p; p.bird = b; b.x = p.x; b.y = p.y; b.z = 1; } });
+  }
+
+  let t0 = performance.now(), lastSpook = 0, lastReturn = 0;
+  function step(now){
+    const dt = Math.min(2, (now - t0) / 16.67); t0 = now; const t = now / 1000;
+    const lx = W * (.5 + .38 * Math.sin(t * .11)), ly = Math.max(40, perchTop * (.42 + .2 * Math.sin(t * .19 + 1)));
+    const flying = birds.filter(b => b.state !== 'perch');
+    // ambient spook: every ~8s something startles a stretch of the title
+    if (now - lastSpook > 8000 && perches.length) { lastSpook = now; const p = perches[(Math.random() * perches.length) | 0]; spook(p.x, p.y, 70 * scale); }
+    // send some home
+    if (now - lastReturn > 900) { lastReturn = now; const free = perches.filter(p => !p.bird); for (let i = 0; i < 2 && free.length; i++) { const cand = flying.find(b => b.state === 'fly' && now - b.since > 6000); if (!cand) break; const p = free.splice((Math.random() * free.length) | 0, 1)[0]; cand.state = 'land'; cand.perch = p; p.bird = cand; } }
+    for (const b of flying) {
+      if (b.state === 'land') {
+        const dx = b.perch.x - b.x, dy = b.perch.y - b.y, d = Math.hypot(dx, dy);
+        const sp = Math.min(3.2, d * .05 + .4); b.vx += (dx / d * sp - b.vx) * .12 * dt; b.vy += (dy / d * sp - b.vy) * .12 * dt;
+        b.z += (1 - b.z) * .05 * dt;
+        if (d < 2) { b.state = 'perch'; b.x = b.perch.x; b.y = b.perch.y; b.vx = b.vy = 0; b.dir = Math.random() < .5 ? -1 : 1; continue; }
+      } else {
+        let cx = 0, cy = 0, ax = 0, ay = 0, sx = 0, sy = 0, n = 0;
+        for (const o of flying) { if (o === b || o.state !== 'fly') continue; const dx = o.x - b.x, dy = o.y - b.y, d2 = dx * dx + dy * dy;
+          if (d2 < 2800) { cx += o.x; cy += o.y; ax += o.vx; ay += o.vy; n++; if (d2 < 150) { sx -= dx / (d2 + 1) * 12; sy -= dy / (d2 + 1) * 12; } } }
+        if (n) { b.vx += ((cx / n - b.x) * .0016 + (ax / n - b.vx) * .055) * dt; b.vy += ((cy / n - b.y) * .0016 + (ay / n - b.vy) * .055) * dt; }
+        b.vx += (sx * .05 + (lx - b.x) * .00022) * dt; b.vy += (sy * .05 + (ly - b.y) * .00028) * dt;
+        if (pointer.on) { const dx = b.x - pointer.x, dy = b.y - pointer.y, d2 = dx * dx + dy * dy; if (d2 < 16000) { const f = (1 - d2 / 16000) * .9; const d = Math.sqrt(d2) + .1; b.vx += dx / d * f * dt; b.vy += dy / d * f * dt; } }
+        if (b.y > perchTop - 30) b.vy -= .09 * dt; if (b.y > landTop - 10) b.vy -= .12 * dt; if (b.y < 10) b.vy += .1 * dt; if (b.x < -40) b.vx += .1 * dt; if (b.x > W + 40) b.vx -= .1 * dt;
+        const s = Math.hypot(b.vx, b.vy), max = 3.1 * b.z, min = 1.3 * b.z; if (s > max) { b.vx *= max / s; b.vy *= max / s; } else if (s < min) { b.vx *= min / (s + .01); b.vy *= min / (s + .01); }
+      }
+      b.x += b.vx * dt; b.y += b.vy * dt; b.phase += (.42 + b.z * .14) * dt;
+    }
+    // pointer startles perched birds
+    if (pointer.on) spook(pointer.x, pointer.y, 85 * scale);
+    draw(t);
+  }
+  function spook(x, y, rad){
+    for (const p of perches) { const b = p.bird; if (!b || b.state !== 'perch') continue; if (Math.hypot(p.x - x, p.y - y) < rad) {
+      b.state = 'fly'; p.bird = null; b.perch = null; b.since = performance.now(); b.vx = (Math.random() - .5) * 3 + (p.x - x) * .02; b.vy = -2.6 - Math.random() * 1.5; } }
+  }
+  function draw(t){
+    if (!land || !land.width) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(land, 0, 0, W, H);
+    for (const b of birds) {
+      if (b.state === 'perch') drawPerched(b, t); else drawFlying(b);
+    }
+  }
+  function drawFlying(b){
+    const s = 4.2 * b.z * scale, flap = Math.sin(b.phase) * s * .9, a = Math.atan2(b.vy, b.vx);
+    ctx.fillStyle = ctx.strokeStyle = b.z < .8 ? 'rgba(18,13,20,.7)' : '#120D14';
+    ctx.lineWidth = Math.max(1, s * .32); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.ellipse(b.x, b.y, s * .7, s * .32, a, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(b.x - s * 1.5, b.y - flap - s * .2); ctx.quadraticCurveTo(b.x - s * .5, b.y - flap * .3 - s * .5, b.x, b.y);
+    ctx.quadraticCurveTo(b.x + s * .5, b.y - flap * .3 - s * .5, b.x + s * 1.5, b.y - flap - s * .2); ctx.stroke();
+  }
+  function drawPerched(b, t){
+    const s = scale, d = b.dir, x = b.x, bob = Math.sin(t * 2 + b.bob) > .96 ? 1.2 * s : 0, y = b.y;
+    ctx.fillStyle = '#120D14';
+    ctx.beginPath(); ctx.ellipse(x, y - 3.4 * s, 4.4 * s, 3 * s, -d * .25, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.arc(x + d * 3.6 * s, y - 6.6 * s - bob, 2.3 * s, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x - d * 3 * s, y - 3.4 * s); ctx.lineTo(x - d * 8.5 * s, y - 1 * s); ctx.lineTo(x - d * 8 * s, y - 3 * s); ctx.fill();
+    ctx.strokeStyle = '#E8A23A'; ctx.lineWidth = 1.3 * s; ctx.beginPath(); ctx.moveTo(x + d * 5.4 * s, y - 6.8 * s - bob); ctx.lineTo(x + d * 7.4 * s, y - 6.4 * s - bob); ctx.stroke();
+  }
+
+  let heroVisible = true, raf = 0;
+  function loop(now){ if (heroVisible) step(now); raf = requestAnimationFrame(loop); }
+  function startHero(){
+    setup();
+    if (reduce) { draw(0); return; }
+    new IntersectionObserver(([e]) => heroVisible = e.isIntersecting).observe(hero);
+    raf = requestAnimationFrame(loop);
+    hero.addEventListener('pointermove', e => { const r = hero.getBoundingClientRect(); pointer = {x: e.clientX - r.left, y: e.clientY - r.top, on: true}; });
+    hero.addEventListener('pointerleave', () => pointer.on = false);
+    hero.addEventListener('pointerdown', e => { const r = hero.getBoundingClientRect(); spook(e.clientX - r.left, e.clientY - r.top, 220 * scale); });
+  }
+  (document.fonts ? document.fonts.load('400 100px Gloock').then(() => document.fonts.ready) : Promise.resolve()).then(startHero, startHero);
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { perches.forEach(p => p.bird = null); setup(); if (reduce) draw(0); }, 150); });
+
+  /* ================= sky tint, year counter, ruler ================= */
+  const tinted = $$('[data-sky]'), eras = $$('.era[data-year]'), counter = $('#counter'), yr = $('#yr'), yrEra = $('#yr-era'), ruler = $('#ruler');
+  eras.forEach(e => { const a = document.createElement('a'); a.href = '#' + e.id; a.innerHTML = `<span>${e.dataset.label}</span><i></i>`; ruler.appendChild(a); });
+  const marks = [...ruler.children];
+  const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a, b, f) => '#' + a.map((v, i) => Math.round(v + (b[i] - v) * f).toString(16).padStart(2, '0')).join('');
+  const fmtYear = y => { y = Math.round(y); return y < 1 ? [String(Math.max(1, -y)), 'BC'] : [String(y), 'AD']; };
+  function onScroll(){
+    const mid = innerHeight * .55;
+    // sky colour
+    let prev = tinted[0], next = tinted[0], f = 0;
+    for (let i = 0; i < tinted.length; i++) { const r = tinted[i].getBoundingClientRect(); if (r.top <= mid) { prev = tinted[i]; next = tinted[i + 1] || tinted[i]; const nr = next.getBoundingClientRect(); f = next === prev ? 0 : Math.min(1, Math.max(0, (mid - r.top) / Math.max(1, nr.top - r.top))); f = Math.max(0, (f - .6) / .4); } }
+    const c = mix(hex(prev.dataset.sky), hex(next.dataset.sky), f);
+    document.body.style.background = c; document.documentElement.style.setProperty('--sky', c);
+    // year counter
+    let y = +eras[0].dataset.year, cur = -1;
+    for (let i = 0; i < eras.length; i++) {
+      const r = eras[i].getBoundingClientRect();
+      if (r.top <= mid) { cur = i; const n = eras[i + 1]; const y0 = +eras[i].dataset.year;
+        if (n) { const nr = n.getBoundingClientRect(); const g = Math.min(1, Math.max(0, (mid - r.top) / Math.max(1, nr.top - r.top))); const e = g < .55 ? 0 : (g - .55) / .45; y = y0 + (+n.dataset.year - y0) * (e * e * (3 - 2 * e)); }
+        else y = y0; }
+    }
+    const [num, era] = fmtYear(y); yr.textContent = num; yrEra.textContent = cur < 0 ? 'BC' : era;
+    const show = hero.getBoundingClientRect().bottom < innerHeight * .4 && cur >= 0;
+    counter.classList.toggle('on', show); ruler.classList.toggle('on', show);
+    marks.forEach((m, i) => m.classList.toggle('cur', i === cur));
+    // plate parallax
+    if (!reduce) for (const img of plates) { const r = img.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) continue; const p = (r.top + r.height / 2 - innerHeight / 2) / innerHeight; img.style.transform = `translateY(${(-p * 7).toFixed(2)}%)`; }
+  }
+  const plates = $$('.frame img');
+  let ticking = false; addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { onScroll(); ticking = false; }); } }, {passive:true});
+  onScroll();
+
+  /* ================= place names ================= */
+  const ALPH = 'abcdefghijklmnoprstuvzëçčćšžđ';
+  function scramble(el, to){
+    if (reduce) { el.textContent = to; return; }
+    const from = el.textContent, len = Math.max(from.length, to.length), start = performance.now(), dur = 520;
+    (function tick(now){ const p = Math.min(1, (now - start) / dur); let s = '';
+      for (let i = 0; i < len; i++) { const lock = i / len < p * 1.15 - .1; s += lock ? (to[i] || '') : (i < to.length || p < .5 ? ALPH[(Math.random() * ALPH.length) | 0] : ''); }
+      el.textContent = p >= 1 ? to : s; if (p < 1) requestAnimationFrame(tick); })(start);
+  }
+  $$('.names button').forEach(b => b.addEventListener('click', () => {
+    const lang = b.dataset.lang;
+    $$('.names button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    $$('.pn').forEach(el => { const to = el.dataset[lang]; if (el.textContent !== to) scramble(el, to); el.lang = lang === 'en' ? 'en' : lang; });
+  }));
+
+  /* ================= 1389 peony petals ================= */
+  const pc = $('#petals'), sec = $('#e1389');
+  if (pc && !reduce) {
+    const g = pc.getContext('2d'); let pw, ph, petals = [], on = false;
+    const size = () => { const r = sec.getBoundingClientRect(); pw = pc.width = r.width; ph = pc.height = r.height; };
+    size(); addEventListener('resize', size);
+    const rnd = mulberry(3);
+    for (let i = 0; i < 38; i++) petals.push({x: rnd() * 1, y: rnd() * 1, r: 5 + rnd() * 9, a: rnd() * 6.28, s: .15 + rnd() * .35, w: rnd() * 6.28});
+    new IntersectionObserver(([e]) => { on = e.isIntersecting; if (on) requestAnimationFrame(pt); }).observe(sec);
+    function pt(now){ if (!on) return; g.clearRect(0, 0, pw, ph); const t = now / 1000;
+      for (const p of petals) { p.y += p.s / ph * 1.2; if (p.y > 1.05) { p.y = -.05; p.x = Math.random(); }
+        const x = p.x * pw + Math.sin(t * .6 + p.w) * 30, y = p.y * ph; p.a += .006;
+        g.save(); g.translate(x, y); g.rotate(p.a + Math.sin(t + p.w) * .4); g.scale(1, .55 + .45 * Math.sin(t * 1.3 + p.w));
+        g.fillStyle = 'rgba(212,86,111,.32)'; g.beginPath(); g.moveTo(0, -p.r); g.bezierCurveTo(p.r, -p.r, p.r, p.r * .6, 0, p.r); g.bezierCurveTo(-p.r, p.r * .6, -p.r, -p.r, 0, -p.r); g.fill(); g.restore(); }
+      requestAnimationFrame(pt); }
+  }
+
+  /* ================= NEWBORN repaint ================= */
+  const NB = [
+    {name:'2008 · Yellow, signed', paint: () => 'url("data:image/svg+xml,' + encodeURIComponent(sig()) + '") center/220px, #F1C21B'},
+    {name:'Every letter its own colour', paint: i => ['#2C5DA9','#E2432A','#F1C21B','#1E8A5A','#EDE6D6','#7A3E9D','#F08A24'][i]},
+    {name:'Stripes', paint: i => `repeating-linear-gradient(${i % 2 ? 45 : -45}deg,#EDE6D6 0 9px,#16131A 9px 18px)`},
+    {name:'Sky to field', paint: () => 'linear-gradient(180deg,#4E3552,#D4566F 55%,#E39A6A)'},
+    {name:'Patchwork', paint: i => `conic-gradient(from ${i * 40}deg,#F1C21B 0 25%,#2C5DA9 0 50%,#EDE6D6 0 75%,#E2432A 0)`}
+  ];
+  function sig(){ let s = '<svg xmlns="http://www.w3.org/2000/svg" width="220" height="220">'; const r = mulberry(9);
+    for (let i = 0; i < 26; i++) { let x = r() * 220, y = r() * 220, d = `M${x.toFixed(1)} ${y.toFixed(1)}`; for (let k = 0; k < 6; k++) { x += 4 + r() * 8; d += ` q${(r() * 6 - 3).toFixed(1)} ${(-6 - r() * 6).toFixed(1)} ${(4 + r() * 4).toFixed(1)} ${(r() * 8 - 4).toFixed(1)}`; }
+      s += `<path d="${d}" fill="none" stroke="${['#16131A','#2C5DA9','#B4243C'][i % 3]}" stroke-width="1.1" stroke-linecap="round" opacity=".7" transform="rotate(${(r() * 30 - 15).toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`; }
+    return s + '</svg>'; }
+  let nbi = 0; const letters = $$('#nb .l b');
+  function paint(n){ nbi = n % NB.length; letters.forEach((l, i) => { l.style.background = NB[nbi].paint(i); l.style.webkitBackgroundClip = l.style.backgroundClip = 'text'; }); $('#nb-name').textContent = NB[nbi].name; }
+  paint(0);
+  $('#nb').addEventListener('click', () => {
+    const ls = $$('#nb .l');
+    if (reduce) { paint(nbi + 1); return; }
+    ls.forEach((l, i) => setTimeout(() => { l.style.transform = 'translateY(-14px) rotate(-4deg)'; setTimeout(() => { l.style.transform = ''; }, 260); }, i * 60));
+    setTimeout(() => paint(nbi + 1), 200);
+  });
+})();
+</script>
+</body>
+</html>
